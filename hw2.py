@@ -25,6 +25,9 @@ NUM_EPISODES = 1000
 device = torch.device("cpu")
 
 def train():
+
+    global EPS
+    
     policy_net = DQN(N_STATE, N_ACTIONS).to(device)
     target_net = DQN(N_STATE, N_ACTIONS).to(device)
     target_net.load_state_dict(policy_net.state_dict())
@@ -91,7 +94,7 @@ def train():
     # make figure bigger
     plt.rcParams["figure.figsize"] = (10, 10)
     fig, ax = plt.subplots(2)
-    ax[0].plot(episode_reward)_
+    ax[0].plot(episode_reward)
     ax[0].set_title("Cumulative Reward")
     ax[0].set_xlabel("Episode")
     ax[0].set_ylabel("Reward")
@@ -116,7 +119,7 @@ def test():
     policy_net = DQN(N_STATE, N_ACTIONS).to(device)
     policy_net.load_state_dict(torch.load("dqn.pth"))
 
-    env = Hw2Env(n_actions=N_ACTIONS, render_mode="gui")
+    env = Hw2Env(n_actions=N_ACTIONS, render_mode="offscreen")
     env.reset()
 
     state = torch.tensor(env.high_level_state(), dtype=torch.float32, device=device).unsqueeze(0)
